@@ -4,137 +4,123 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anurag Sharma — Photonics R&D Engineer</title>
-  <meta name="description" content="Anurag Sharma — Photonics Scientific R&D Engineer. Portfolio: academic, non-academic, research & development work." />
+  <meta name="description" content="Anurag Sharma — Photonics Scientific R&amp;D Engineer. Portfolio: academic, non-academic, research & development work." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg-dark: #071028;
-      --bg-light: #f7f9fc;
-      --card-dark:#0b1220;
-      --card-light:#ffffff;
-      --muted-dark:#94a3b8;
-      --muted-light:#6b7280;
-      --accent-1:#7c3aed;
-      --accent-2:#00c2ff;
-      --glass: rgba(255,255,255,0.04);
-      --glass-2: rgba(255,255,255,0.02);
-      --radius:14px;
-      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      /* Color tokens */
+      --accent-1: #7c3aed;
+      --accent-2: #00c2ff;
+      --radius: 14px;
       --ease: cubic-bezier(.2,.9,.2,1);
-    }
-
-    /* Light theme variables (override on .light) */
-    .light {
+      --glass: rgba(255,255,255,0.04);
+      --card-shadow: 0 12px 40px rgba(2,6,23,0.45);
+      --max-width: 1100px;
+      /* Light defaults (overridden by .dark if needed) */
       --bg: linear-gradient(180deg,#f7f9fc,#eef2f7);
+      --card-bg: #ffffff;
       --text: #0b1220;
-      --card: var(--card-light);
-      --muted: var(--muted-light);
-      --glass: rgba(12,18,30,0.02);
-      --shadow: 0 8px 26px rgba(12,18,30,0.08);
+      --muted: #6b7280;
+      --muted-2: rgba(11,18,32,0.06);
+      --logo-filter: none; /* colored logos */
     }
 
-    /* Dark theme defaults */
-    :not(.light) {
-      --bg: linear-gradient(180deg,var(--bg-dark), #071827 60%);
+    /* When user chooses dark, add .dark to body */
+    body.dark {
+      --bg: linear-gradient(180deg,#071028,#071827 60%);
+      --card-bg: #0b1220;
       --text: #e6eef8;
-      --card: var(--card-dark);
-      --muted: var(--muted-dark);
+      --muted: #94a3b8;
+      --muted-2: rgba(255,255,255,0.03);
+      --logo-filter: invert(1) brightness(3) contrast(1.1); /* white logos */
     }
 
     *{box-sizing:border-box}
     html,body{height:100%;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;color:var(--text);background:var(--bg);margin:0;-webkit-font-smoothing:antialiased}
     a{color:inherit;text-decoration:none}
-    .container{max-width:1100px;margin:0 auto;padding:28px}
+    .container{max-width:var(--max-width);margin:0 auto;padding:28px}
 
     /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:12px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
     .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;box-shadow:0 6px 28px rgba(12,18,30,0.45)}
-    nav{display:flex;gap:18px;align-items:center}
-    nav a{color:var(--muted);font-weight:600;padding:8px 12px;border-radius:10px;transition:all .22s var(--ease)}
-    nav a:hover{color:var(--text);background:rgba(255,255,255,0.03);transform:translateY(-2px)}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;box-shadow:0 8px 26px rgba(124,58,237,0.12)}
+    nav{display:flex;gap:16px;align-items:center}
+    nav a{color:var(--muted);font-weight:600;padding:8px 12px;border-radius:10px;transition:all .22s var(--ease);font-size:14px}
+    nav a:hover{color:var(--text);background:rgba(0,0,0,0.03);transform:translateY(-2px)}
+
     .controls{display:flex;gap:12px;align-items:center}
 
     /* Toggle */
-    .theme-toggle{width:46px;height:30px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;padding:4px;cursor:pointer;gap:6px}
-    .theme-toggle .knob{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#fff,#ddd);box-shadow:0 3px 10px rgba(2,6,23,0.35);transform:translateX(0);transition:transform .28s var(--ease)}
-    .light .theme-toggle{border-color:rgba(11,18,32,0.06)}
-    .light .theme-toggle .knob{background:linear-gradient(180deg,#fff,#f1f5f9)}
+    .theme-toggle{width:48px;height:30px;border-radius:999px;background:transparent;border:1px solid var(--muted-2);display:flex;align-items:center;padding:4px;cursor:pointer;gap:6px}
+    .theme-toggle .knob{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#fff,#f1f5f9);box-shadow:0 3px 10px rgba(2,6,23,0.12);transform:translateX(0);transition:transform .28s var(--ease)}
+    body.dark .theme-toggle .knob{transform:translateX(16px);background:linear-gradient(180deg,#dfd9ff,#f0fbff)}
 
-    /* Hero */
+    /* Layout */
     .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start;margin-top:18px}
-    .intro{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:28px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.02);transition:transform .25s var(--ease)}
-    .intro h1{margin:0;font-size:30px;line-height:1.05}
+    .card{background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid var(--muted-2);box-shadow:var(--card-shadow);overflow:hidden}
+    .intro h1{margin:0;font-size:30px;line-height:1.02}
     .intro p{color:var(--muted);margin:12px 0 18px;font-size:15px}
-    .cta{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{padding:10px 14px;border-radius:12px;font-weight:700;border:0;cursor:pointer;transition:all .22s var(--ease);display:inline-flex;align-items:center;gap:8px}
-    .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;box-shadow:0 8px 30px rgba(124,58,237,0.12)}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .btn-primary:hover{transform:translateY(-3px);filter:brightness(1.03)}
-    .btn-ghost:hover{background:rgba(255,255,255,0.02);transform:translateY(-2px)}
 
-    .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);box-shadow:var(--shadow);overflow:hidden}
-    .meta{display:flex;flex-direction:column;gap:8px}
-    .meta .k{color:var(--muted);font-size:13px}
-    .meta .v{font-weight:700}
+    .btn{padding:10px 14px;border-radius:12px;font-weight:700;border:0;cursor:pointer;transition:all .22s var(--ease);display:inline-flex;align-items:center;gap:8px;font-size:14px}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;box-shadow:0 12px 28px rgba(124,58,237,0.10)}
+    .btn-ghost{background:transparent;border:1px solid var(--muted-2);color:var(--muted)}
+    .btn-primary:hover{transform:translateY(-3px);filter:brightness(1.02)}
+    .btn-ghost:hover{background:rgba(0,0,0,0.02);transform:translateY(-2px)}
 
-    /* Carousel (certificates) */
-    .cert-wrap{display:flex;flex-direction:column;gap:12px}
-    .cert-carousel{position:relative;height:120px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
-    .cert-list{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-    .cert-card{position:absolute;inset:0;display:flex;gap:12px;align-items:center;justify-content:flex-start;padding:12px 20px;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-    .cert-card.show{opacity:1;pointer-events:auto;transform:translateY(0)}
-    .cert-logo{width:56px;height:56px;border-radius:10px;flex:0 0 56px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);padding:6px}
+    /* Certificates carousel: one card visible at a time, fade */
+    .cert-wrap{display:flex;flex-direction:column;gap:10px}
+    .cert-header{display:flex;justify-content:space-between;align-items:center}
+    .cert-carousel{position:relative;height:130px;border-radius:12px;overflow:hidden;border:1px solid var(--muted-2);background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);display:flex;align-items:center}
+    .cert-card{position:absolute;inset:0;padding:14px 18px;display:flex;gap:14px;align-items:center;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+    .cert-card.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .cert-logo{width:64px;height:64px;border-radius:10px;flex:0 0 64px;display:flex;align-items:center;justify-content:center;background:transparent}
+    .cert-logo img{width:44px;height:44px;filter:var(--logo-filter)}
     .cert-meta{display:flex;flex-direction:column}
-    .cert-title{font-weight:700}
-    .cert-issuer{font-size:13px;color:var(--muted)}
+    .cert-title{font-weight:700;font-size:15px;color:var(--text)}
+    .cert-issuer{font-size:13px;color:var(--muted);margin-top:6px}
 
     /* Profile image */
-    .profile{width:100%;border-radius:12px;object-fit:cover;max-height:320px;box-shadow:0 8px 30px rgba(2,6,23,0.45)}
+    .profile{width:100%;border-radius:12px;object-fit:cover;max-height:320px;box-shadow:0 12px 40px rgba(2,6,23,0.28);margin-top:12px}
 
-    /* Skills */
+    /* Snapshot skills */
     .skills{display:flex;flex-direction:column;gap:12px;margin-top:12px}
     .skill{display:flex;gap:12px;align-items:center}
     .skill .label{width:120px;font-size:13px;color:var(--muted)}
-    .skill .bar{flex:1;background:rgba(255,255,255,0.04);height:10px;border-radius:999px;position:relative;overflow:hidden}
+    .skill .bar{flex:1;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));height:10px;border-radius:999px;position:relative;overflow:hidden}
     .skill .bar > i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));width:0%;transition:width 1.6s var(--ease)}
     .skill .val{width:48px;text-align:right;font-weight:700;font-size:13px;color:var(--muted)}
 
-    /* Sections & projects */
-    section{margin-top:26px}
-    .section-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-    .section-title h2{margin:0;font-size:18px}
+    /* Sections grid */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .proj{padding:16px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .proj{padding:16px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.01), transparent);border:1px solid var(--muted-2)}
 
-    /* Publications list */
-    .pub-list{display:flex;flex-direction:column;gap:12px}
-    .pub{padding:12px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.02)}
+    /* Blog section */
+    #blogList{display:flex;flex-direction:column;gap:12px}
+    .blog-card{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:1px solid var(--muted-2);background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent)}
+    .blog-thumb{width:120px;height:80px;border-radius:8px;flex:0 0 120px;object-fit:cover}
+    .blog-meta{display:flex;flex-direction:column;gap:6px}
+    .blog-title{font-weight:700}
+    .blog-desc{color:var(--muted);font-size:14px}
+    .blog-actions{margin-top:8px}
 
     /* Back to top */
     .back-top{position:fixed;right:20px;bottom:28px;width:48px;height:48px;border-radius:12px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;cursor:pointer;box-shadow:0 12px 30px rgba(124,58,237,0.18);opacity:0;transform:translateY(20px);transition:all .36s var(--ease);z-index:40}
     .back-top.show{opacity:1;transform:translateY(0)}
 
-    /* Fade-in animation helper */
+    /* Reveal helper */
     .reveal{opacity:0;transform:translateY(10px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
-    /* Responsive */
     @media (max-width:980px){
       .hero{grid-template-columns:1fr;gap:18px}
       .grid{grid-template-columns:1fr}
       nav{display:none}
+      .cert-carousel{height:140px}
     }
 
-    /* Small screens tweak */
-    @media (max-width:520px){
-      .cert-carousel{height:110px}
-      .cert-card{padding:10px}
-      .cert-logo{width:48px;height:48px}
-    }
   </style>
 </head>
 <body>
@@ -149,18 +135,19 @@
       </div>
 
       <div class="controls">
-        <nav>
+        <nav aria-label="Main navigation">
           <a href="#about">About</a>
           <a href="#academic">Academic</a>
           <a href="#research">R&amp;D</a>
           <a href="#projects">Projects</a>
           <a href="#publications">Publications</a>
+          <a href="#blog">Blogs</a>
           <a href="#contact">Contact</a>
         </nav>
 
         <!-- Theme toggle -->
-        <div class="theme-toggle" id="themeToggle" title="Toggle theme (dark / light)" aria-label="Toggle theme">
-          <div class="knob"></div>
+        <div class="theme-toggle" id="themeToggle" title="Toggle theme" role="button" aria-pressed="false" tabindex="0">
+          <div class="knob" aria-hidden="true"></div>
         </div>
       </div>
     </header>
@@ -170,9 +157,9 @@
         <!-- Left: intro -->
         <div class="intro card reveal">
           <h1>Hi — I'm Anurag Sharma</h1>
-          <p>Photonics Scientific R&amp;D Engineer working at Optical Allied Engineering (Bangalore). I bridge theory and experiment — designing, assembling, and testing electro-optics systems (FTIR, LIDAR, IR lasers, detectors). I also develop nanophotonic waveguides and phoxonic crystal devices using FDTD, COMSOL, RCWA, and Python toolchains.</p>
+          <p>Photonics Scientific R&amp;D Engineer based in Bangalore. I bridge theory and experiment — building FTIR imaging systems, developing on-chip nanophotonic devices, and delivering field-deployable optical sensing hardware. I use FDTD, COMSOL, RCWA and Python pipelines for reliable simulation and prototyping.</p>
 
-          <div class="cta">
+          <div class="cta" style="margin-top:12px">
             <a class="btn btn-primary" href="mailto:photonics.anurag13@gmail.com">✉ Contact</a>
             <a class="btn btn-ghost" href="https://www.linkedin.com/in/designerguy13atpec/" target="_blank" rel="noopener">LinkedIn</a>
             <a class="btn btn-ghost" href="https://designerguy13-photonics.github.io" target="_blank" rel="noopener">Live site</a>
@@ -181,86 +168,80 @@
           <div style="margin-top:18px" class="meta">
             <div><span class="k">Location</span> — <span class="v">Bangalore, India</span></div>
             <div><span class="k">Role</span> — <span class="v">Photonics Scientific R&amp;D Engineer</span></div>
-            <div><span class="k">Tools</span> — <span class="v">Zemax, Lumerical FDTD, COMSOL, Python, LabVIEW, K-Layout</span></div>
+            <div><span class="k">Tools</span> — <span class="v">Zemax, Lumerical FDTD, COMSOL, Python, LabVIEW</span></div>
           </div>
         </div>
 
         <!-- Right: snapshot + cert carousel -->
-        <aside class="card reveal">
+        <aside class="card reveal" aria-labelledby="snapshotTitle">
           <div class="cert-wrap">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <strong style="font-size:15px">Certifications</strong>
+            <div class="cert-header">
+              <strong>Certifications</strong>
               <small style="color:var(--muted);font-size:13px">auto-rotating • click to open</small>
             </div>
 
-            <div class="cert-carousel" id="certCarousel" aria-hidden="false">
-              <div class="cert-list" id="certList">
-                <!-- Each cert card: logo, title, issuer -->
-                <!-- Use simple-icons CDN for logos; swap src if you prefer actual images -->
-                <div class="cert-card" data-link="https://courses.edx.org/certificates/fbc1d0c04fa14cff803172b2680f4977">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/edx.svg" alt="edX" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">edX Certificate</div><div class="cert-issuer">edX</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://verify.skilljar.com/c/x47pizcvp533">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/skillshare.svg" alt="Skilljar" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">Skilljar Certificate</div><div class="cert-issuer">Skilljar</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://www.linkedin.com/learning/certificates/d76a7974984a8abe057e86502492b23d62868c1af98e81d0ceb63bc903fa16bf">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">LinkedIn Learning</div><div class="cert-issuer">LinkedIn</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://www.udemy.com/certificate/UC-4d86e2a5-7e5f-46e5-86f3-939b850bcbf2/">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/udemy.svg" alt="Udemy" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">Udemy Certificate</div><div class="cert-issuer">Udemy</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://crlearningpath.s3.amazonaws.com/crcloud/learningpathcertificate/5636">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/coursera.svg" alt="CR" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">CR Learning Path</div><div class="cert-issuer">CR</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://www.coursera.org/account/accomplishments/certificate/E6MGZR7YS2TR">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/coursera.svg" alt="Coursera" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">Coursera Certificate</div><div class="cert-issuer">Coursera</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=3a48a498-7050-4725-8645-f72fce24be5d">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mathworks.svg" alt="MathWorks" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">MATLAB Academy</div><div class="cert-issuer">MathWorks</div></div>
-                </div>
-
-                <!-- Add more cert-card entries here using same structure -->
-                <div class="cert-card" data-link="https://coursera.org/share/4907566b8d26589b4b25078607dc15ff">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/coursera.svg" alt="Coursera" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">Coursera Share</div><div class="cert-issuer">Coursera</div></div>
-                </div>
-
-                <div class="cert-card" data-link="https://udemy-certificate.s3.amazonaws.com/image/UC-04cf4842-140c-47af-9a6d-79abf08b0a9c.jpg?v=1586974724000">
-                  <div class="cert-logo"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/udemy.svg" alt="Udemy Image" style="width:36px;height:36px;filter:invert(1)"></div>
-                  <div class="cert-meta"><div class="cert-title">Udemy (image)</div><div class="cert-issuer">Udemy</div></div>
+            <div class="cert-carousel" id="certCarousel" role="region" aria-roledescription="carousel" aria-label="Certificates">
+              <!-- Certificate cards: add / remove as required.
+                   Each .cert-card needs data-link attribute to open when clicked. -->
+              <div class="cert-card active" data-link="https://courses.edx.org/certificates/fbc1d0c04fa14cff803172b2680f4977">
+                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/edx.svg" alt="edX logo"></div>
+                <div class="cert-meta">
+                  <div class="cert-title">Fundamentals Course — edX</div>
+                  <div class="cert-issuer">edX • Certificate ID: fbc1d0c0</div>
                 </div>
               </div>
+
+              <div class="cert-card" data-link="https://verify.skilljar.com/c/x47pizcvp533">
+                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/skilljar.svg" alt="Skilljar logo"></div>
+                <div class="cert-meta">
+                  <div class="cert-title">Skilljar Course — Verification</div>
+                  <div class="cert-issuer">Skilljar</div>
+                </div>
+              </div>
+
+              <div class="cert-card" data-link="https://www.linkedin.com/learning/certificates/d76a7974984a8abe057e86502492b23d62868c1af98e81d0ceb63bc903fa16bf">
+                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn logo"></div>
+                <div class="cert-meta">
+                  <div class="cert-title">LinkedIn Learning — Advanced</div>
+                  <div class="cert-issuer">LinkedIn Learning</div>
+                </div>
+              </div>
+
+              <div class="cert-card" data-link="https://www.udemy.com/certificate/UC-4d86e2a5-7e5f-46e5-86f3-939b850bcbf2/">
+                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/udemy.svg" alt="Udemy logo"></div>
+                <div class="cert-meta">
+                  <div class="cert-title">VLSI / Circuit Design — Udemy</div>
+                  <div class="cert-issuer">Udemy</div>
+                </div>
+              </div>
+
+              <div class="cert-card" data-link="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=3a48a498-7050-4725-8645-f72fce24be5d">
+                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mathworks.svg" alt="MathWorks logo"></div>
+                <div class="cert-meta">
+                  <div class="cert-title">MATLAB Academy — Certificate</div>
+                  <div class="cert-issuer">MathWorks</div>
+                </div>
+              </div>
+
+              <!-- add more .cert-card blocks following the structure above -->
             </div>
           </div>
 
           <!-- Profile picture -->
           <img class="profile" src="https://raw.githubusercontent.com/designerguy13-photonics/designerguy13-photonics.github.io/main/WhatsApp%20Image%202025-02-03%20at%2012.23.12.jpeg" alt="Anurag Sharma Profile Picture">
 
-          <h3 style="margin-top:12px;margin-bottom:8px">Snapshot</h3>
+          <h3 id="snapshotTitle" style="margin-top:12px;margin-bottom:8px">Snapshot</h3>
           <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
             <div class="meta"><div class="k">Experience</div><div class="v">Photonics R&amp;D (Industry &amp; Academia)</div></div>
             <div class="meta"><div class="k">Education</div><div class="v">PhD (E.C.E) — Punjab Engineering College (submitted)</div></div>
             <div class="meta"><div class="k">Publications</div><div class="v">Journal + Conference (SCI / SCOPUS)</div></div>
             <div class="meta"><div class="k">Contact</div><div class="v">photonics.anurag13@gmail.com</div></div>
 
-            <div class="skills" aria-hidden="false" style="margin-top:6px">
-              <div class="skill"><div class="label">Optical Design</div><div class="bar"><i style="width:0%" data-target="90"></i></div><div class="val">90%</div></div>
-              <div class="skill"><div class="label">FDTD / RCWA</div><div class="bar"><i style="width:0%" data-target="85"></i></div><div class="val">85%</div></div>
-              <div class="skill"><div class="label">Python & ML</div><div class="bar"><i style="width:0%" data-target="78"></i></div><div class="val">78%</div></div>
-              <div class="skill"><div class="label">Interferometry</div><div class="bar"><i style="width:0%" data-target="82"></i></div><div class="val">82%</div></div>
+            <div class="skills" aria-hidden="false">
+              <div class="skill"><div class="label">Optical Design</div><div class="bar"><i data-target="90"></i></div><div class="val">90%</div></div>
+              <div class="skill"><div class="label">FDTD / RCWA</div><div class="bar"><i data-target="85"></i></div><div class="val">85%</div></div>
+              <div class="skill"><div class="label">Python &amp; ML</div><div class="bar"><i data-target="78"></i></div><div class="val">78%</div></div>
+              <div class="skill"><div class="label">Interferometry</div><div class="bar"><i data-target="82"></i></div><div class="val">82%</div></div>
             </div>
           </div>
         </aside>
@@ -270,7 +251,7 @@
       <section id="about" class="reveal">
         <div class="section-title"><h2>About</h2></div>
         <div class="card">
-          <p style="margin:0;color:var(--muted)">I specialise in translating theoretical photonics concepts into robust experimental systems. My recent work includes building and debugging FTIR-based imaging systems, LIDAR alignment, infrared laser integration, and on-chip ultralow-loss waveguide design. I enjoy mentoring interns, writing technical proposals, and creating reproducible simulation pipelines with Python.</p>
+          <p style="margin:0;color:var(--muted)">I specialise in translating theoretical photonics concepts into robust experimental systems. Recent work includes FTIR imaging, LIDAR alignment, infrared laser integration, and on-chip ultralow-loss waveguide design. I build reproducible Python pipelines for simulation and analysis.</p>
         </div>
       </section>
 
@@ -279,48 +260,29 @@
         <div class="section-title"><h2>Academic</h2></div>
         <div class="grid">
           <div class="card">
-            <h3>Education & Research</h3>
-            <p style="color:var(--muted)">PhD (ECE) — Punjab Engineering College — thesis: ultra-low-loss multispectral on-chip waveguiding architecture. Experience in nano-fabrication and characterization, coursework in quantum optics, PI circuits, and inverse design.</p>
-            <div class="tags">
-              <span class="tag" style="background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px">PhD Research</span>
-              <span class="tag" style="background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px">Nanophotonics</span>
-              <span class="tag" style="background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px">Fabrication</span>
-            </div>
+            <h3>Education &amp; Research</h3>
+            <p style="color:var(--muted)">PhD (ECE) — Punjab Engineering College — thesis: ultra-low-loss multispectral on-chip waveguiding architecture. Experience in nano-fabrication and characterization, coursework in quantum optics and inverse design.</p>
           </div>
 
           <div class="card">
-            <h3>Teaching & Outreach</h3>
-            <p style="color:var(--muted)">Adjunct Faculty (UpGrad), guest lectures and webinars through OPTICA, SPIE, and IEEE Photonics. Led lab-workshops and mentored students on interferometry and photonics CAD tools.</p>
+            <h3>Teaching &amp; Outreach</h3>
+            <p style="color:var(--muted)">Adjunct Faculty (UpGrad), guest lectures and webinars through OPTICA, SPIE, and IEEE Photonics. Led lab workshops and mentored students on interferometry and photonics CAD tools.</p>
           </div>
         </div>
       </section>
 
       <!-- Research -->
       <section id="research" class="reveal">
-        <div class="section-title"><h2>Research & Development</h2></div>
+        <div class="section-title"><h2>Research &amp; Development</h2></div>
         <div class="grid">
           <div class="proj">
             <h3>Passive FTIR Spectrometer — System Integration</h3>
-            <p style="color:var(--muted)">Developed lab and field-capable passive FTIR spectrometer setups, including optical alignment, detector selection (MCT / InSb), and automated data acquisition using LabVIEW.</p>
-            <div class="tags"><span class="tag" style="font-size:13px">FTIR</span><span class="tag" style="font-size:13px">LabVIEW</span><span class="tag" style="font-size:13px">MCT</span></div>
+            <p style="color:var(--muted)">Built lab & field passive FTIR setups with detector selection (MCT/InSb) and automated data capture.</p>
           </div>
 
           <div class="proj">
             <h3>Phoxonic Crystal Supercell Design</h3>
-            <p style="color:var(--muted)">Simulation and optimization (FDTD / RCWA / PWE) of phoxonic crystals for broad mid-wave infrared transmission (>90% uniform transmission in specific designs).</p>
-            <div class="tags"><span class="tag" style="font-size:13px">FDTD</span><span class="tag" style="font-size:13px">RCWA</span><span class="tag" style="font-size:13px">MWIR</span></div>
-          </div>
-
-          <div class="proj">
-            <h3>Fresnel Lens Projection Imaging</h3>
-            <p style="color:var(--muted)">Designed, fabricated and tested a compact Fresnel-lens based projection imaging system during graduate internship.</p>
-            <div class="tags"><span class="tag" style="font-size:13px">Imaging</span></div>
-          </div>
-
-          <div class="proj">
-            <h3>Bi-Axial and Differential Absorption LIDAR</h3>
-            <p style="color:var(--muted)">Worked on alignment, signal chain testing and performance verification for LIDAR prototypes used in environmental sensing.</p>
-            <div class="tags"><span class="tag" style="font-size:13px">LIDAR</span></div>
+            <p style="color:var(--muted)">Simulated and optimized phoxonic crystals for broad MWIR transmission using FDTD/RCWA/PWE methods.</p>
           </div>
         </div>
       </section>
@@ -330,23 +292,13 @@
         <div class="section-title"><h2>Selected Projects</h2></div>
         <div class="grid">
           <div class="proj">
-            <h3>100 mm Collimated Source & Interferometric Passive FTIR</h3>
-            <p style="color:var(--muted)">Designed a 100 mm collimated source using a 200 mm flat mirror and off-axis parabolic mirror for interferometric imaging in MWIR/LWIR bands.</p>
+            <h3>100 mm Collimated Source &amp; Interferometric Passive FTIR</h3>
+            <p style="color:var(--muted)">Optical bench design for MWIR/LWIR interferometric imaging.</p>
           </div>
 
           <div class="proj">
             <h3>On-chip Waveguide Optimization using Deep Learning</h3>
-            <p style="color:var(--muted)">Worked on inverse design and optimization pipelines for waveguide geometries applying ML techniques to minimize loss and enhance bandwidth.</p>
-          </div>
-
-          <div class="proj">
-            <h3>Development Contract — Imaging FTIR for Vehicle/Tripod Mount</h3>
-            <p style="color:var(--muted)">Quoted and designed a compact imaging FTIR for Lynred detector FPAs with specific FOV and optical constraints for field deployment.</p>
-          </div>
-
-          <div class="proj">
-            <h3>Teaching & Mentoring — Intern Projects</h3>
-            <p style="color:var(--muted)">Supervised intern projects on interferometry, optical alignment and opto-electronics prototyping.</p>
+            <p style="color:var(--muted)">Inverse design pipeline for low-loss waveguides using ML techniques.</p>
           </div>
         </div>
       </section>
@@ -354,23 +306,39 @@
       <!-- Publications -->
       <section id="publications" class="reveal">
         <div class="section-title"><h2>Publications</h2></div>
-        <div class="card pub-list">
-          <div class="pub">
-            <strong>Publication list & profiles</strong>
-            <p style="margin:6px 0 0;color:var(--muted)">Full publication list is available on Scilit and linked researcher profiles. For quick access:</p>
-            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-              <a class="btn btn-ghost" href="https://www.scilit.com/scholars/13496107" target="_blank" rel="noopener">Scilit Profile</a>
-              <a class="btn btn-ghost" href="https://github.com/NANOPHOTONIC-RESEARCH-SOCIETY-AT-PEC/PHD18307002_Supplementry_Data_Anurag-Sharma-" target="_blank" rel="noopener">Supplementary Data</a>
-            </div>
-          </div>
+        <div class="card">
+          <strong>Publication list & profiles</strong>
+          <p style="margin:6px 0 0;color:var(--muted)">Full list on Scilit. For fast access: <a class="btn btn-ghost" href="https://www.scilit.com/scholars/13496107" target="_blank">Scilit</a></p>
+        </div>
+      </section>
 
-          <div class="pub">
-            <strong>Representative works</strong>
-            <ul style="margin:8px 0 0;color:var(--muted)">
-              <li>Phoxonic crystal supercell design — journal article (SCI)</li>
-              <li>Ultra-low-loss multispectral on-chip waveguiding — journal article (SCI)</li>
-              <li>Fresnel projection imaging — conference proceedings (SCOPUS)</li>
-            </ul>
+      <!-- Blogs & Vlogs (expandable) -->
+      <section id="blog" class="reveal">
+        <div class="section-title"><h2>Blogs &amp; Vlogs</h2></div>
+        <div class="card">
+          <p style="margin:0 0 12px;color:var(--muted)">This section is designed to be append-only: to add a new post, insert another `.blog-card` inside the <code>#blogList</code> container (HTML snippet examples below).</p>
+
+          <div id="blogList">
+            <!-- Example blog card (replace thumbnail, title, description, link) -->
+            <article class="blog-card">
+              <img class="blog-thumb" src="https://raw.githubusercontent.com/designerguy13-photonics/designerguy13-photonics.github.io/main/sample_blog_thumb.jpg" alt="Sample blog thumbnail">
+              <div class="blog-meta">
+                <div class="blog-title">Schlieren Imaging — Practical Tips</div>
+                <div class="blog-desc">Step-by-step instructions for setting up high-sensitivity schlieren systems and avoiding common pitfalls.</div>
+                <div class="blog-actions"><a class="btn btn-ghost" href="#" onclick="alert('Replace with the blog post URL')">Read more</a></div>
+              </div>
+            </article>
+
+            <!-- Add more .blog-card blocks here. Example snippet to copy:
+              <article class="blog-card">
+                <img class="blog-thumb" src="URL_TO_THUMB" alt="Thumb">
+                <div class="blog-meta">
+                  <div class="blog-title">Post Title</div>
+                  <div class="blog-desc">Short description (1–2 lines).</div>
+                  <div class="blog-actions"><a class="btn btn-ghost" href="FULL_POST_URL" target="_blank">Read more</a></div>
+                </div>
+              </article>
+            -->
           </div>
         </div>
       </section>
@@ -381,15 +349,14 @@
         <div class="grid">
           <div class="card">
             <h3>Get in touch</h3>
-            <p style="color:var(--muted)">Email me for collaborations, research queries or contract work.</p>
+            <p style="color:var(--muted)">Email me for collaborations or contract work.</p>
             <p style="margin-top:8px"><a href="mailto:photonics.anurag13@gmail.com" class="btn btn-primary">photonics.anurag13@gmail.com</a></p>
-            <p style="margin-top:12px;color:var(--muted)">Also available on LinkedIn:</p>
-            <p><a class="btn btn-ghost" href="https://www.linkedin.com/in/designerguy13atpec/" target="_blank" rel="noopener">LinkedIn profile</a></p>
+            <p style="margin-top:12px;color:var(--muted)">Also available: <a class="btn btn-ghost" href="https://www.linkedin.com/in/designerguy13atpec/" target="_blank">LinkedIn</a></p>
           </div>
 
           <div class="card">
             <h3>Quick resume</h3>
-            <p style="color:var(--muted)">Download a formatted resume or link to the thesis and supplementary data.</p>
+            <p style="color:var(--muted)">Replace the placeholder link below with the hosted PDF on your repo.</p>
             <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
               <a class="btn btn-ghost" href="#" onclick="alert('Replace this with your hosted resume PDF URL')">Download Resume</a>
               <a class="btn btn-ghost" href="https://github.com/NANOPHOTONIC-RESEARCH-SOCIETY-AT-PEC/PHD18307002_Supplementry_Data_Anurag-Sharma-" target="_blank">Supplementary Data</a>
@@ -399,138 +366,175 @@
       </section>
     </main>
 
-    <footer style="margin-top:34px">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)">
+    <footer style="margin-top:34px;color:var(--muted)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div>© <strong>Anurag Sharma</strong> — Photonics R&amp;D • Built with HTML &amp; CSS</div>
         <div>Links: <a href="https://www.linkedin.com/in/designerguy13atpec/" target="_blank">LinkedIn</a> · <a href="https://www.scilit.com/scholars/13496107" target="_blank">Scilit</a></div>
       </div>
     </footer>
-
   </div>
 
   <!-- Back to top -->
   <div class="back-top" id="backTop" title="Back to top" aria-label="Back to top">↑</div>
 
   <script>
-    /******************
-     * Theme handling  *
-     ******************/
-    const root = document.documentElement;
-    const page = document.getElementById('page');
-    const toggle = document.getElementById('themeToggle');
+    /************************
+     * Theme: auto + toggle *
+     ************************/
+    (function(){
+      const body = document.body;
+      const toggle = document.getElementById('themeToggle');
 
-    // Initialize theme:
-    const saved = localStorage.getItem('theme'); // 'light' or 'dark'
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    function applyTheme(theme) {
-      if (theme === 'light') {
-        document.body.classList.add('light');
-        toggle.querySelector('.knob').style.transform = 'translateX(16px)';
-      } else {
-        document.body.classList.remove('light');
-        toggle.querySelector('.knob').style.transform = 'translateX(0)';
+      // Decide starting theme: saved > prefers-color-scheme > light
+      const saved = localStorage.getItem('site-theme'); // 'dark' or 'light'
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let theme = saved || (prefersDark ? 'dark' : 'light');
+
+      function applyTheme(t){
+        if (t === 'dark') {
+          body.classList.add('dark');
+          toggle.setAttribute('aria-pressed','true');
+        } else {
+          body.classList.remove('dark');
+          toggle.setAttribute('aria-pressed','false');
+        }
       }
-    }
-    applyTheme(saved ? saved : (prefersDark ? 'dark' : 'light'));
+      applyTheme(theme);
 
-    toggle.addEventListener('click', ()=>{
-      const isLight = document.body.classList.toggle('light');
-      const newTheme = isLight ? 'light' : 'dark';
-      localStorage.setItem('theme', newTheme);
-      applyTheme(newTheme);
-    });
-
-    /******************
-     * Cert carousel   *
-     ******************/
-    const certs = Array.from(document.querySelectorAll('.cert-card'));
-    let cIndex = 0;
-    function showCert(i){
-      certs.forEach((c, idx) => {
-        c.classList.toggle('show', idx === i);
+      toggle.addEventListener('click', ()=>{
+        theme = body.classList.contains('dark') ? 'light' : 'dark';
+        localStorage.setItem('site-theme', theme);
+        applyTheme(theme);
       });
-    }
-    // initial show
-    showCert(cIndex);
 
-    // auto-rotate
-    let certTimer = setInterval(() => {
-      cIndex = (cIndex + 1) % certs.length;
-      showCert(cIndex);
-    }, 4200);
-
-    // clicking a cert opens its link and pauses rotation for a short time
-    certs.forEach((c, idx) => {
-      c.addEventListener('click', (e) => {
-        const url = c.dataset.link;
-        if (url) window.open(url, '_blank');
-        // pause rotation briefly
-        clearInterval(certTimer);
-        setTimeout(()=>{ certTimer = setInterval(()=>{ cIndex = (cIndex + 1) % certs.length; showCert(cIndex); }, 4200); }, 5000);
+      // keyboard accessible
+      toggle.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
       });
-    });
+    })();
 
-    /******************
-     * Skills animate  *
-     ******************/
-    function animateSkills(){
-      document.querySelectorAll('.skill .bar > i').forEach(el=>{
-        const target = el.dataset.target || el.getAttribute('data-target');
-        if (target) {
-          setTimeout(()=>{ el.style.width = target + '%'; }, 300);
-        }
+    /*******************************
+     * Certificates carousel logic *
+     *******************************/
+    (function(){
+      const carousel = document.getElementById('certCarousel');
+      const cards = Array.from(carousel.querySelectorAll('.cert-card'));
+      if (!cards.length) return;
+      let idx = 0;
+
+      function show(i){
+        cards.forEach((c, j) => c.classList.toggle('active', j === i));
+      }
+      show(idx);
+
+      // rotation timer (respect reduced-motion)
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let timer = null;
+      function startTimer(){
+        if (reduce) return;
+        stopTimer();
+        timer = setInterval(()=>{ idx = (idx+1) % cards.length; show(idx); }, 4200);
+      }
+      function stopTimer(){ if (timer) clearInterval(timer); timer = null; }
+      startTimer();
+
+      // click to open
+      cards.forEach((c, j) => {
+        c.style.cursor = 'pointer';
+        c.addEventListener('click', (e) => {
+          const url = c.dataset.link;
+          if (url) window.open(url, '_blank');
+          // pause rotation briefly
+          stopTimer();
+          setTimeout(startTimer, 4500);
+        });
       });
-    }
 
-    /******************
-     * Reveal on scroll*
-     ******************/
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          // animate skills when snapshot is visible
-          if (entry.target.querySelector('.skills')) animateSkills();
-          observer.unobserve(entry.target);
-        }
+      // Pause on hover (desktop)
+      carousel.addEventListener('mouseenter', () => stopTimer());
+      carousel.addEventListener('mouseleave', () => startTimer());
+
+      // keyboard nav for accessibility (left/right)
+      let root = carousel;
+      root.tabIndex = 0;
+      root.addEventListener('keydown', (e)=>{
+        if (e.key === 'ArrowRight') { idx = (idx+1) % cards.length; show(idx); stopTimer(); setTimeout(startTimer,2000); }
+        if (e.key === 'ArrowLeft')  { idx = (idx-1+cards.length)%cards.length; show(idx); stopTimer(); setTimeout(startTimer,2000); }
       });
-    }, {threshold: 0.12});
-    reveals.forEach(r => observer.observe(r));
+    })();
 
-    /******************
-     * Smooth anchor   *
-     ******************/
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', function(e){
-        const target = document.querySelector(this.getAttribute('href'));
-        if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+    /************************
+     * Skills animate on view
+     ************************/
+    (function(){
+      function animateSkills(){
+        document.querySelectorAll('.skill .bar > i').forEach(el => {
+          const t = el.getAttribute('data-target') || el.dataset.target || '70';
+          setTimeout(()=> el.style.width = t + '%', 250);
+        });
+      }
+      // Reveal observer will call animate when snapshot visible (see below)
+      window.animateSkills = animateSkills;
+    })();
+
+    /*************************
+     * Reveal on scroll
+     *************************/
+    (function(){
+      const reveals = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries, ob) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // trigger skill animation when snapshot (aside) appears
+            if (entry.target.querySelector('.skills')) window.animateSkills && window.animateSkills();
+            ob.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+      reveals.forEach(r => obs.observe(r));
+    })();
+
+    /*******************
+     * Smooth anchors  *
+     *******************/
+    (function(){
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+        });
       });
-    });
+    })();
 
-    /******************
-     * Back to top     *
-     ******************/
-    const backTop = document.getElementById('backTop');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 400) backTop.classList.add('show'); else backTop.classList.remove('show');
-    });
-    backTop.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+    /*******************
+     * Back to top btn *
+     *******************/
+    (function(){
+      const back = document.getElementById('backTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) back.classList.add('show'); else back.classList.remove('show');
+      });
+      back.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+    })();
 
-    /******************
-     * Accessibility   *
-     ******************/
-    // keyboard accessibility for theme toggle
-    toggle.tabIndex = 0;
-    toggle.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') toggle.click(); });
+    /*******************
+     * Accessibility: respects reduced-motion
+     *******************/
+    (function(){
+      const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (media.matches) {
+        // stop cert rotation, minimize transitions
+        // rotation logic already checks reduce; we can reduce CSS transitions by setting reduced flag if needed
+      }
+    })();
 
-    // reduce motion respects
-    const mediaReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mediaReduced.matches) {
-      // stop animations
-      clearInterval(certTimer);
-    }
-
+    /*******************
+     * Blog section note
+     *******************/
+    // To add a new blog later without touching JS/CSS:
+    // - open index.html and inside <div id="blogList"> add another <article class="blog-card"> block (copy the example).
+    // This keeps everything append-only and will not disturb other sections.
   </script>
 </body>
 </html>
