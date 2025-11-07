@@ -4,38 +4,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anurag Sharma — Photonics R&D Engineer</title>
-  <meta name="description" content="Anurag Sharma — Photonics Scientific R&amp;D Engineer. Portfolio: academic, non-academic, research & development work." />
+  <meta name="description" content="Anurag Sharma — Photonics Scientific R&D Engineer. Portfolio: academic, non-academic, research & development work." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* Color tokens */
       --accent-1: #7c3aed;
       --accent-2: #00c2ff;
       --radius: 14px;
       --ease: cubic-bezier(.2,.9,.2,1);
-      --glass: rgba(255,255,255,0.04);
-      --card-shadow: 0 12px 40px rgba(2,6,23,0.45);
       --max-width: 1100px;
-      /* Light defaults (overridden by .dark if needed) */
+
+      /* Light theme defaults */
       --bg: linear-gradient(180deg,#f7f9fc,#eef2f7);
       --card-bg: #ffffff;
       --text: #0b1220;
       --muted: #6b7280;
       --muted-2: rgba(11,18,32,0.06);
-      --logo-filter: none; /* colored logos */
+      --glass: rgba(11,18,32,0.03);
+      --logo-filter: none;
+      --banner-overlay: rgba(255,255,255,0.45);
+      --watermark-color: rgba(11,18,32,0.08);
     }
 
-    /* When user chooses dark, add .dark to body */
     body.dark {
       --bg: linear-gradient(180deg,#071028,#071827 60%);
       --card-bg: #0b1220;
       --text: #e6eef8;
       --muted: #94a3b8;
       --muted-2: rgba(255,255,255,0.03);
-      --logo-filter: invert(1) brightness(3) contrast(1.1); /* white logos */
+      --glass: rgba(255,255,255,0.02);
+      --logo-filter: invert(1) brightness(3) contrast(1.1);
+      --banner-overlay: rgba(5,8,12,0.45);
+      --watermark-color: rgba(255,255,255,0.06);
     }
 
     *{box-sizing:border-box}
@@ -49,7 +52,7 @@
     .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;box-shadow:0 8px 26px rgba(124,58,237,0.12)}
     nav{display:flex;gap:16px;align-items:center}
     nav a{color:var(--muted);font-weight:600;padding:8px 12px;border-radius:10px;transition:all .22s var(--ease);font-size:14px}
-    nav a:hover{color:var(--text);background:rgba(0,0,0,0.03);transform:translateY(-2px)}
+    nav a:hover{color:var(--text);background:var(--glass);transform:translateY(-2px)}
 
     .controls{display:flex;gap:12px;align-items:center}
 
@@ -58,34 +61,56 @@
     .theme-toggle .knob{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#fff,#f1f5f9);box-shadow:0 3px 10px rgba(2,6,23,0.12);transform:translateX(0);transition:transform .28s var(--ease)}
     body.dark .theme-toggle .knob{transform:translateX(16px);background:linear-gradient(180deg,#dfd9ff,#f0fbff)}
 
-    /* Layout */
-    .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start;margin-top:18px}
-    .card{background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid var(--muted-2);box-shadow:var(--card-shadow);overflow:hidden}
+    /* Hero and banner */
+    .hero{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start;margin-top:18px}
+    .banner-wrap{grid-column:1 / -1;border-radius:var(--radius);overflow:hidden;position:relative;margin-bottom:8px}
+    .banner{position:relative;height:420px;background:#0b1220;border-radius:var(--radius);overflow:hidden}
+    @media (max-width:900px){ .banner{height:300px} }
+
+    /* banner: canvas particles behind slides */
+    .banner-canvas{position:absolute;inset:0;z-index:0}
+    .slides{position:absolute;inset:0;z-index:2;display:block}
+    .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;display:flex;align-items:center;justify-content:flex-start;background-size:cover;background-position:center center}
+    .slide.active{opacity:1;z-index:2}
+    .slide .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45));mix-blend-mode:multiply;z-index:1}
+    body.dark .slide .overlay{background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55))}
+
+    /* caption box */
+    .caption{
+      position:relative;z-index:3;display:flex;flex-direction:column;gap:10px;
+      max-width:720px;margin-left:48px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding:18px;border-radius:12px;color:var(--text);backdrop-filter: blur(6px);
+      box-shadow:0 10px 30px rgba(2,6,23,0.3);
+    }
+    body.dark .caption { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+    .caption h3{margin:0;font-size:22px}
+    .caption p{margin:0;color:var(--muted)}
+    .caption .actions{display:flex;gap:8px;margin-top:8px}
+    .caption .btn{padding:8px 12px;border-radius:10px;font-weight:700;border:0;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white}
+    .btn-ghost{background:transparent;border:1px solid var(--muted-2);color:var(--muted)}
+
+    /* watermark */
+    .watermark{position:absolute;right:18px;bottom:12px;z-index:3;color:var(--watermark-color);font-weight:700;font-size:13px;pointer-events:none}
+
+    /* controls: arrows and dots */
+    .banner-controls{position:absolute;left:0;right:0;bottom:14px;z-index:4;display:flex;align-items:center;justify-content:center;gap:12px;padding:0 18px}
+    .arrow{width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.14));display:flex;align-items:center;justify-content:center;color:white;cursor:pointer;backdrop-filter: blur(6px)}
+    .arrow svg{width:18px;height:18px;opacity:0.95}
+    .dots{display:flex;gap:8px;align-items:center}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.22);cursor:pointer}
+    .dot.active{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));box-shadow:0 6px 18px rgba(124,58,237,0.12)}
+
+    /* intro & aside snapshot */
+    .card{background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid var(--muted-2);box-shadow:0 12px 40px rgba(2,6,23,0.12);overflow:hidden}
     .intro h1{margin:0;font-size:30px;line-height:1.02}
     .intro p{color:var(--muted);margin:12px 0 18px;font-size:15px}
+    .cta{display:flex;gap:10px;flex-wrap:wrap}
 
-    .btn{padding:10px 14px;border-radius:12px;font-weight:700;border:0;cursor:pointer;transition:all .22s var(--ease);display:inline-flex;align-items:center;gap:8px;font-size:14px}
-    .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;box-shadow:0 12px 28px rgba(124,58,237,0.10)}
-    .btn-ghost{background:transparent;border:1px solid var(--muted-2);color:var(--muted)}
-    .btn-primary:hover{transform:translateY(-3px);filter:brightness(1.02)}
-    .btn-ghost:hover{background:rgba(0,0,0,0.02);transform:translateY(-2px)}
+    .profile{width:100%;border-radius:12px;object-fit:cover;max-height:320px;box-shadow:0 12px 40px rgba(2,6,23,0.18);margin-top:12px}
 
-    /* Certificates carousel: one card visible at a time, fade */
-    .cert-wrap{display:flex;flex-direction:column;gap:10px}
-    .cert-header{display:flex;justify-content:space-between;align-items:center}
-    .cert-carousel{position:relative;height:130px;border-radius:12px;overflow:hidden;border:1px solid var(--muted-2);background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);display:flex;align-items:center}
-    .cert-card{position:absolute;inset:0;padding:14px 18px;display:flex;gap:14px;align-items:center;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-    .cert-card.active{opacity:1;pointer-events:auto;transform:translateY(0)}
-    .cert-logo{width:64px;height:64px;border-radius:10px;flex:0 0 64px;display:flex;align-items:center;justify-content:center;background:transparent}
-    .cert-logo img{width:44px;height:44px;filter:var(--logo-filter)}
-    .cert-meta{display:flex;flex-direction:column}
-    .cert-title{font-weight:700;font-size:15px;color:var(--text)}
-    .cert-issuer{font-size:13px;color:var(--muted);margin-top:6px}
-
-    /* Profile image */
-    .profile{width:100%;border-radius:12px;object-fit:cover;max-height:320px;box-shadow:0 12px 40px rgba(2,6,23,0.28);margin-top:12px}
-
-    /* Snapshot skills */
+    /* snapshot skills */
     .skills{display:flex;flex-direction:column;gap:12px;margin-top:12px}
     .skill{display:flex;gap:12px;align-items:center}
     .skill .label{width:120px;font-size:13px;color:var(--muted)}
@@ -93,34 +118,44 @@
     .skill .bar > i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));width:0%;transition:width 1.6s var(--ease)}
     .skill .val{width:48px;text-align:right;font-weight:700;font-size:13px;color:var(--muted)}
 
-    /* Sections grid */
+    /* other sections */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
     .proj{padding:16px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.01), transparent);border:1px solid var(--muted-2)}
 
-    /* Blog section */
+    /* blog list */
     #blogList{display:flex;flex-direction:column;gap:12px}
     .blog-card{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:1px solid var(--muted-2);background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent)}
     .blog-thumb{width:120px;height:80px;border-radius:8px;flex:0 0 120px;object-fit:cover}
     .blog-meta{display:flex;flex-direction:column;gap:6px}
     .blog-title{font-weight:700}
     .blog-desc{color:var(--muted);font-size:14px}
-    .blog-actions{margin-top:8px}
 
-    /* Back to top */
+    /* recent activities linkedin card style (shared) */
+    .linkedin-post{position:relative;cursor:pointer;overflow:hidden;border-radius:10px;border:1px solid var(--muted-2)}
+    .post-thumb img{width:100%;height:200px;object-fit:cover;display:block}
+
+    /* footer & back-top */
     .back-top{position:fixed;right:20px;bottom:28px;width:48px;height:48px;border-radius:12px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;cursor:pointer;box-shadow:0 12px 30px rgba(124,58,237,0.18);opacity:0;transform:translateY(20px);transition:all .36s var(--ease);z-index:40}
     .back-top.show{opacity:1;transform:translateY(0)}
 
-    /* Reveal helper */
+    /* reveal helper */
     .reveal{opacity:0;transform:translateY(10px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
     .reveal.visible{opacity:1;transform:translateY(0)}
 
-    @media (max-width:980px){
+    @media (max-width:900px){
       .hero{grid-template-columns:1fr;gap:18px}
       .grid{grid-template-columns:1fr}
       nav{display:none}
-      .cert-carousel{height:140px}
+      .banner{height:300px}
+      .caption{margin-left:18px;padding:12px;max-width:60%}
     }
 
+    @media (max-width:520px){
+      .caption{max-width:88%;margin-left:12px}
+      .banner{height:260px}
+      .watermark{display:none}
+      .caption h3{font-size:18px}
+    }
   </style>
 </head>
 <body>
@@ -140,12 +175,12 @@
           <a href="#academic">Academic</a>
           <a href="#research">R&amp;D</a>
           <a href="#projects">Projects</a>
+          <a href="#activities">Recent Activities</a>
           <a href="#publications">Publications</a>
           <a href="#blog">Blogs</a>
           <a href="#contact">Contact</a>
         </nav>
 
-        <!-- Theme toggle -->
         <div class="theme-toggle" id="themeToggle" title="Toggle theme" role="button" aria-pressed="false" tabindex="0">
           <div class="knob" aria-hidden="true"></div>
         </div>
@@ -153,7 +188,127 @@
     </header>
 
     <main>
+      <!-- Hero grid where banner sits above both columns -->
       <div class="hero">
+
+        <!-- BANNER WRAP: inside hero (spans full width of grid) -->
+        <div class="banner-wrap reveal" aria-hidden="false">
+          <div class="banner" id="banner" role="region" aria-label="Highlights gallery">
+
+            <!-- Canvas for bluish particles (behind slides) -->
+            <canvas class="banner-canvas" id="particlesCanvas" aria-hidden="true"></canvas>
+
+            <!-- Slides container -->
+            <div class="slides" id="slides" aria-live="polite">
+              <!-- Slide 1: Welcome (intro) -->
+              <div class="slide active" data-index="0" style="background:linear-gradient(120deg, rgba(124,58,237,0.28), rgba(0,194,255,0.18)), url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=60') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption" role="group" aria-label="Welcome slide">
+                  <h3>Welcome to my portfolio</h3>
+                  <p>Hi — I'm Anurag Sharma. I design and build optical systems and nanophotonic devices bridging lab research and field-ready engineering.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="#about">Explore my work</a>
+                    <a class="btn btn-ghost" href="https://designerguy13-photonics.github.io" target="_blank">Visit site</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2: Industry Talk (LinkedIn) -->
+              <div class="slide" data-index="1" style="background:linear-gradient(120deg, rgba(0,0,0,0.22), rgba(0,0,0,0.12)), url('https://media.licdn.com/dms/image/D4D22AQGpmh28iG9smA/feedshare-shrink_800/0/1715099209464?e=2147483647&v=beta&t=YrL6JX4KpDkOGMZ7AgGrVKMCByo5RV_WC2wP09Z8VnY') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption">
+                  <h3>Industry Talk — Photonics Innovation</h3>
+                  <p>Presented an industry talk on photonics innovation and collaboration with academic and industry partners.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="https://www.linkedin.com/feed/update/urn:li:activity:7202213779751800832" target="_blank" rel="noopener">View Post</a>
+                    <a class="btn btn-ghost" href="#activities">More activities</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3: DRDO–Optica–IRDE Collaboration -->
+              <div class="slide" data-index="2" style="background:linear-gradient(120deg, rgba(0,0,0,0.22), rgba(0,0,0,0.12)), url('https://media.licdn.com/dms/image/v2/D4D22AQFqfe1xW_cYfg/feedshare-shrink_800/B4DZX6ZIMtGkAk-/0/1743662647739?e=1764201600&v=beta&t=hMyvNpI33TN-8ndYdJ7G-yRBaP-5NekEZ76Psm78S0s') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption">
+                  <h3>DRDO–Optica–IRDE Collaboration</h3>
+                  <p>Successful partnership developing a passive FTIR chemical sensor with Optica and IRDE—applied photonics in action.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="https://www.linkedin.com/posts/designerguy13atpec_drdo-optica-irde-activity-7313464178936016897-SCgj" target="_blank" rel="noopener">View Post</a>
+                    <a class="btn btn-ghost" href="#projects">Project details</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 4: Phoxonic Research (placeholder visual) -->
+              <div class="slide" data-index="3" style="background:linear-gradient(120deg, rgba(124,58,237,0.22), rgba(0,194,255,0.12)), url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=60') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption">
+                  <h3>Phoxonic Crystal Research</h3>
+                  <p>Design and optimization of phoxonic crystal supercells for broadband mid-wave infrared transmission.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="https://www.scilit.com/scholars/13496107" target="_blank" rel="noopener">View Publications</a>
+                    <a class="btn btn-ghost" href="#research">Read more</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 5: Schlieren Blog (placeholder visual) -->
+              <div class="slide" data-index="4" style="background:linear-gradient(120deg, rgba(10,10,20,0.22), rgba(124,58,237,0.08)), url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=60') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption">
+                  <h3>Schlieren Imaging — Practical Insights</h3>
+                  <p>Step-by-step techniques to setup high-sensitivity Schlieren imaging for flow visualization and hypersonic diagnostics.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="#blog">Read Blog</a>
+                    <a class="btn btn-ghost" href="#projects">Related projects</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 6: Optica–IRDE FTIR Deployment (placeholder visual) -->
+              <div class="slide" data-index="5" style="background:linear-gradient(120deg, rgba(0,0,30,0.18), rgba(0,120,200,0.10)), url('https://images.unsplash.com/photo-1470509037662-20103b3e9d0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=60') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption">
+                  <h3>FTIR Prototype Deployment</h3>
+                  <p>Field deployment and testing of the passive FTIR sensor—optical integration and detector selection for rugged environments.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="#projects">Project page</a>
+                    <a class="btn btn-ghost" href="#publications">Related papers</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 7: Photonics News 2025 (placeholder visual) -->
+              <div class="slide" data-index="6" style="background:linear-gradient(120deg, rgba(124,58,237,0.22), rgba(0,194,255,0.18)), url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1800&q=60') center/cover no-repeat;">
+                <div class="overlay" aria-hidden="true"></div>
+                <div class="caption">
+                  <h3>Photonics R&D Highlights — 2025</h3>
+                  <p>Recent advances and highlights across projects and collaborations—research, engineering, and field demonstrations.</p>
+                  <div class="actions">
+                    <a class="btn btn-primary" href="#publications">View highlights</a>
+                    <a class="btn btn-ghost" href="#activities">Recent activities</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- watermark -->
+            <div class="watermark" aria-hidden="true">Anurag Sharma — Photonics R&amp;D Engineer</div>
+
+            <!-- left/right arrows -->
+            <div class="banner-controls" role="group" aria-label="Banner navigation">
+              <button class="arrow" id="prevBtn" aria-label="Previous slide">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M15 6 L9 12 L15 18" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="dots" id="dots" role="tablist" aria-label="Slide indicators"></div>
+              <button class="arrow" id="nextBtn" aria-label="Next slide">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 6 L15 12 L9 18" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
         <!-- Left: intro -->
         <div class="intro card reveal">
           <h1>Hi — I'm Anurag Sharma</h1>
@@ -172,61 +327,8 @@
           </div>
         </div>
 
-        <!-- Right: snapshot + cert carousel -->
+        <!-- Right: snapshot card -->
         <aside class="card reveal" aria-labelledby="snapshotTitle">
-          <div class="cert-wrap">
-            <div class="cert-header">
-              <strong>Certifications</strong>
-              <small style="color:var(--muted);font-size:13px">auto-rotating • click to open</small>
-            </div>
-
-            <div class="cert-carousel" id="certCarousel" role="region" aria-roledescription="carousel" aria-label="Certificates">
-              <!-- Certificate cards: add / remove as required.
-                   Each .cert-card needs data-link attribute to open when clicked. -->
-              <div class="cert-card active" data-link="https://courses.edx.org/certificates/fbc1d0c04fa14cff803172b2680f4977">
-                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/edx.svg" alt="edX logo"></div>
-                <div class="cert-meta">
-                  <div class="cert-title">Fundamentals Course — edX</div>
-                  <div class="cert-issuer">edX • Certificate ID: fbc1d0c0</div>
-                </div>
-              </div>
-
-              <div class="cert-card" data-link="https://verify.skilljar.com/c/x47pizcvp533">
-                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/skilljar.svg" alt="Skilljar logo"></div>
-                <div class="cert-meta">
-                  <div class="cert-title">Skilljar Course — Verification</div>
-                  <div class="cert-issuer">Skilljar</div>
-                </div>
-              </div>
-
-              <div class="cert-card" data-link="https://www.linkedin.com/learning/certificates/d76a7974984a8abe057e86502492b23d62868c1af98e81d0ceb63bc903fa16bf">
-                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn logo"></div>
-                <div class="cert-meta">
-                  <div class="cert-title">LinkedIn Learning — Advanced</div>
-                  <div class="cert-issuer">LinkedIn Learning</div>
-                </div>
-              </div>
-
-              <div class="cert-card" data-link="https://www.udemy.com/certificate/UC-4d86e2a5-7e5f-46e5-86f3-939b850bcbf2/">
-                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/udemy.svg" alt="Udemy logo"></div>
-                <div class="cert-meta">
-                  <div class="cert-title">VLSI / Circuit Design — Udemy</div>
-                  <div class="cert-issuer">Udemy</div>
-                </div>
-              </div>
-
-              <div class="cert-card" data-link="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=3a48a498-7050-4725-8645-f72fce24be5d">
-                <div class="cert-logo" aria-hidden="true"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mathworks.svg" alt="MathWorks logo"></div>
-                <div class="cert-meta">
-                  <div class="cert-title">MATLAB Academy — Certificate</div>
-                  <div class="cert-issuer">MathWorks</div>
-                </div>
-              </div>
-
-              <!-- add more .cert-card blocks following the structure above -->
-            </div>
-          </div>
-
           <!-- Profile picture -->
           <img class="profile" src="https://raw.githubusercontent.com/designerguy13-photonics/designerguy13-photonics.github.io/main/WhatsApp%20Image%202025-02-03%20at%2012.23.12.jpeg" alt="Anurag Sharma Profile Picture">
 
@@ -292,16 +394,15 @@
         <div class="section-title"><h2>Selected Projects</h2></div>
         <div class="grid">
           <!-- LinkedIn project post -->
-         <div class="proj linkedin-post" onclick="window.open('https://www.linkedin.com/posts/designerguy13atpec_drdo-optica-irde-activity-7313464178936016897-SCgj', '_blank')">
-           <div class="post-thumb">
-             <img src="https://media.licdn.com/dms/image/v2/D4D22AQFqfe1xW_cYfg/feedshare-shrink_800/B4DZX6ZIMtGkAk-/0/1743662647739?e=1764201600&v=beta&t=hMyvNpI33TN-8ndYdJ7G-yRBaP-5NekEZ76Psm78S0s" alt="Optica is thrilled to announce its successful partnership with IRDE, Dehradun in developing the Passive FTIR Chemical Sensor!">
-             <div class="overlay">
-               <img class="logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn logo">
-               <span>View DRDO–Optica–IRDE update</span>
-             </div>
-           </div>
-        </div>
-          
+          <div class="proj linkedin-post" onclick="window.open('https://www.linkedin.com/posts/designerguy13atpec_drdo-optica-irde-activity-7313464178936016897-SCgj', '_blank')">
+            <div class="post-thumb">
+              <img src="https://media.licdn.com/dms/image/v2/D4D22AQFqfe1xW_cYfg/feedshare-shrink_800/B4DZX6ZIMtGkAk-/0/1743662647739?e=1764201600&v=beta&t=hMyvNpI33TN-8ndYdJ7G-yRBaP-5NekEZ76Psm78S0s" alt="Optica - IRDE">
+              <div class="overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.25);"></div>
+            </div>
+            <h3 style="margin-top:10px">DRDO–Optica–IRDE: Passive FTIR</h3>
+            <p style="color:var(--muted)">Collaboration and prototype integration for a passive FTIR chemical sensor.</p>
+          </div>
+
           <div class="proj">
             <h3>100 mm Collimated Source &amp; Interferometric Passive FTIR</h3>
             <p style="color:var(--muted)">Optical bench design for MWIR/LWIR interferometric imaging.</p>
@@ -315,37 +416,22 @@
       </section>
 
       <!-- Recent Activities -->
-<section id="activities" class="reveal">
-  <div class="section-title"><h2>Recent Activities</h2></div>
-  <div class="grid">
+      <section id="activities" class="reveal">
+        <div class="section-title"><h2>Recent Activities</h2></div>
+        <div class="grid">
+          <div class="proj linkedin-post" onclick="window.open('https://www.linkedin.com/feed/update/urn:li:activity:7202213779751800832', '_blank')">
+            <div class="post-thumb"><img src="https://media.licdn.com/dms/image/D4D22AQGpmh28iG9smA/feedshare-shrink_800/0/1715099209464?e=2147483647&v=beta&t=YrL6JX4KpDkOGMZ7AgGrVKMCByo5RV_WC2wP09Z8VnY" alt="Industry Talk"></div>
+            <h4 style="margin-top:10px">Industry Talk — Photonics Innovation</h4>
+            <p style="color:var(--muted)">Presentation on industry–academia collaboration in photonics.</p>
+          </div>
 
-    <!-- Industry Talk Post -->
-    <div class="proj linkedin-post" onclick="window.open('https://www.linkedin.com/feed/update/urn:li:activity:7202213779751800832', '_blank')">
-      <div class="post-thumb">
-        <img src="https://media.licdn.com/dms/image/D4D22AQGpmh28iG9smA/feedshare-shrink_800/0/1715099209464?e=2147483647&v=beta&t=YrL6JX4KpDkOGMZ7AgGrVKMCByo5RV_WC2wP09Z8VnY" 
-             alt="Anurag Sharma Industry Talk on Photonics">
-        <div class="overlay">
-          <img class="logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn logo">
-          <span>Industry Talk — Photonics Innovation</span>
+          <div class="proj linkedin-post" onclick="window.open('https://www.linkedin.com/posts/designerguy13atpec_drdo-optica-irde-activity-7313464178936016897-SCgj', '_blank')">
+            <div class="post-thumb"><img src="https://media.licdn.com/dms/image/D4D22AQG6DnW0Cdp1vA/feedshare-shrink_800/0/1730892312018?e=2147483647&v=beta&t=Hu4Mt1cx9Duj_cDkFMXGbiNfTsyR7ZsRZJp6ojUzlbU" alt="DRDO update"></div>
+            <h4 style="margin-top:10px">DRDO–Optica–IRDE Collaboration Update</h4>
+            <p style="color:var(--muted)">Project update and field testing notes.</p>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Example: DRDO–Optica–IRDE Update -->
-    <div class="proj linkedin-post" onclick="window.open('https://www.linkedin.com/posts/designerguy13atpec_drdo-optica-irde-activity-7313464178936016897-SCgj', '_blank')">
-      <div class="post-thumb">
-        <img src="https://media.licdn.com/dms/image/D4D22AQG6DnW0Cdp1vA/feedshare-shrink_800/0/1730892312018?e=2147483647&v=beta&t=Hu4Mt1cx9Duj_cDkFMXGbiNfTsyR7ZsRZJp6ojUzlbU" 
-             alt="DRDO–Optica–IRDE Project Update">
-        <div class="overlay">
-          <img class="logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn logo">
-          <span>DRDO–Optica–IRDE Collaboration Update</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
+      </section>
 
       <!-- Publications -->
       <section id="publications" class="reveal">
@@ -360,29 +446,17 @@
       <section id="blog" class="reveal">
         <div class="section-title"><h2>Blogs &amp; Vlogs</h2></div>
         <div class="card">
-          <p style="margin:0 0 12px;color:var(--muted)">This section is designed to be append-only: to add a new post, insert another `.blog-card` inside the <code>#blogList</code> container (HTML snippet examples below).</p>
+          <p style="margin:0 0 12px;color:var(--muted)">This section is append-only. Add new posts by inserting another <code class="inline">&lt;article class='blog-card'&gt;</code> block inside <code>#blogList</code>.</p>
 
           <div id="blogList">
-            <!-- Example blog card (replace thumbnail, title, description, link) -->
             <article class="blog-card">
               <img class="blog-thumb" src="https://raw.githubusercontent.com/designerguy13-photonics/designerguy13-photonics.github.io/main/sample_blog_thumb.jpg" alt="Sample blog thumbnail">
               <div class="blog-meta">
                 <div class="blog-title">Schlieren Imaging — Practical Tips</div>
-                <div class="blog-desc">Step-by-step instructions for setting up high-sensitivity schlieren systems and avoiding common pitfalls.</div>
-                <div class="blog-actions"><a class="btn btn-ghost" href="#" onclick="alert('Replace with the blog post URL')">Read more</a></div>
+                <div class="blog-desc">Step-by-step instructions to set up high-sensitivity schlieren imaging.</div>
+                <div class="blog-actions"><a class="btn btn-ghost" href="#" onclick="alert('Replace with actual blog URL')">Read more</a></div>
               </div>
             </article>
-
-            <!-- Add more .blog-card blocks here. Example snippet to copy:
-              <article class="blog-card">
-                <img class="blog-thumb" src="URL_TO_THUMB" alt="Thumb">
-                <div class="blog-meta">
-                  <div class="blog-title">Post Title</div>
-                  <div class="blog-desc">Short description (1–2 lines).</div>
-                  <div class="blog-actions"><a class="btn btn-ghost" href="FULL_POST_URL" target="_blank">Read more</a></div>
-                </div>
-              </article>
-            -->
           </div>
         </div>
       </section>
@@ -408,6 +482,7 @@
           </div>
         </div>
       </section>
+
     </main>
 
     <footer style="margin-top:34px;color:var(--muted)">
@@ -458,53 +533,167 @@
     })();
 
     /*******************************
-     * Certificates carousel logic *
+     * Banner: slides & controls   *
      *******************************/
     (function(){
-      const carousel = document.getElementById('certCarousel');
-      const cards = Array.from(carousel.querySelectorAll('.cert-card'));
-      if (!cards.length) return;
-      let idx = 0;
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const dotsContainer = document.getElementById('dots');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const banner = document.getElementById('banner');
 
-      function show(i){
-        cards.forEach((c, j) => c.classList.toggle('active', j === i));
-      }
-      show(idx);
-
-      // rotation timer (respect reduced-motion)
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!slides.length) return;
+      let index = 0;
+      const intervalMs = 5000;
       let timer = null;
-      function startTimer(){
-        if (reduce) return;
-        stopTimer();
-        timer = setInterval(()=>{ idx = (idx+1) % cards.length; show(idx); }, 4200);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Create dots
+      slides.forEach((s, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label','Slide ' + (i+1));
+        dot.addEventListener('click', ()=> { go(i); pause(); setTimeout(resume, 3000); });
+        dotsContainer.appendChild(dot);
+      });
+
+      function updateDots() {
+        const dots = Array.from(dotsContainer.children);
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
       }
-      function stopTimer(){ if (timer) clearInterval(timer); timer = null; }
-      startTimer();
 
-      // click to open
-      cards.forEach((c, j) => {
-        c.style.cursor = 'pointer';
-        c.addEventListener('click', (e) => {
-          const url = c.dataset.link;
-          if (url) window.open(url, '_blank');
-          // pause rotation briefly
-          stopTimer();
-          setTimeout(startTimer, 4500);
-        });
+      function go(i) {
+        slides.forEach(s => s.classList.remove('active'));
+        slides[i].classList.add('active');
+        index = i;
+        updateDots();
+      }
+
+      function next() { go((index + 1) % slides.length); }
+      function prev() { go((index - 1 + slides.length) % slides.length); }
+
+      // Auto rotate
+      function start() {
+        if (reduceMotion) return;
+        stop();
+        timer = setInterval(next, intervalMs);
+      }
+      function stop() { if (timer) clearInterval(timer); timer = null; }
+      function pause() { stop(); }
+      function resume() { start(); }
+
+      // initial
+      go(0);
+      start();
+
+      // arrow controls
+      nextBtn.addEventListener('click', ()=> { next(); pause(); setTimeout(resume, 3500); });
+      prevBtn.addEventListener('click', ()=> { prev(); pause(); setTimeout(resume, 3500); });
+
+      // pause on hover
+      banner.addEventListener('mouseenter', pause);
+      banner.addEventListener('mouseleave', resume);
+
+      // keyboard nav
+      banner.tabIndex = 0;
+      banner.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { next(); pause(); setTimeout(resume, 3500); }
+        if (e.key === 'ArrowLeft')  { prev(); pause(); setTimeout(resume, 3500); }
       });
+    })();
 
-      // Pause on hover (desktop)
-      carousel.addEventListener('mouseenter', () => stopTimer());
-      carousel.addEventListener('mouseleave', () => startTimer());
+    /*******************************
+     * Canvas particles (bluish)   *
+     *******************************/
+    (function(){
+      const canvas = document.getElementById('particlesCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let width, height, dpi;
+      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+      const targetCount = isMobile ? 25 : 60;
 
-      // keyboard nav for accessibility (left/right)
-      let root = carousel;
-      root.tabIndex = 0;
-      root.addEventListener('keydown', (e)=>{
-        if (e.key === 'ArrowRight') { idx = (idx+1) % cards.length; show(idx); stopTimer(); setTimeout(startTimer,2000); }
-        if (e.key === 'ArrowLeft')  { idx = (idx-1+cards.length)%cards.length; show(idx); stopTimer(); setTimeout(startTimer,2000); }
-      });
+      function setSize(){
+        dpi = window.devicePixelRatio || 1;
+        width = canvas.clientWidth;
+        height = canvas.clientHeight;
+        canvas.width = Math.floor(width * dpi);
+        canvas.height = Math.floor(height * dpi);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.scale(dpi, dpi);
+      }
+
+      function rand(min,max){ return Math.random()*(max-min)+min; }
+
+      function initParticles(){
+        particles = [];
+        for (let i=0;i<targetCount;i++){
+          particles.push({
+            x: Math.random()*width,
+            y: Math.random()*height,
+            vx: rand(-0.02,0.02)*(isMobile?0.6:1.2),
+            vy: rand(-0.03,0.03)*(isMobile?0.6:1.2),
+            r: rand(0.8,2.8),
+            alpha: rand(0.08,0.22),
+            hue: rand(200,220) // bluish hue range
+          });
+        }
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,width,height);
+        // subtle vignette
+        const g = ctx.createLinearGradient(0,0,0,height);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, 'rgba(0,0,0,0.08)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,width,height);
+
+        for (let p of particles){
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // wrap
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+          if (p.y < -10) p.y = height + 10;
+          if (p.y > height + 10) p.y = -10;
+
+          // gentle twinkle
+          p.alpha += (Math.random()-0.5)*0.01;
+          p.alpha = Math.max(0.03, Math.min(0.28, p.alpha));
+
+          ctx.beginPath();
+          // bluish color with soft glow
+          const h = Math.round(p.hue);
+          ctx.fillStyle = `rgba(${Math.round(10 + (h-200)*0.5)},${Math.round(160 + (h-200)*1.6)},255,${p.alpha})`;
+          ctx.shadowBlur = p.r * 4;
+          ctx.shadowColor = `rgba(20,140,255,${p.alpha*0.9})`;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      let raf = null;
+      function loop(){
+        draw();
+        raf = requestAnimationFrame(loop);
+      }
+
+      function start(){
+        cancelAnimationFrame(raf);
+        setSize();
+        initParticles();
+        loop();
+      }
+
+      // resize handling (debounced)
+      let rs;
+      window.addEventListener('resize', ()=>{ clearTimeout(rs); rs = setTimeout(()=>{ start(); }, 220); });
+      start();
     })();
 
     /************************
@@ -517,7 +706,6 @@
           setTimeout(()=> el.style.width = t + '%', 250);
         });
       }
-      // Reveal observer will call animate when snapshot visible (see below)
       window.animateSkills = animateSkills;
     })();
 
@@ -530,7 +718,6 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            // trigger skill animation when snapshot (aside) appears
             if (entry.target.querySelector('.skills')) window.animateSkills && window.animateSkills();
             ob.unobserve(entry.target);
           }
@@ -563,22 +750,15 @@
     })();
 
     /*******************
-     * Accessibility: respects reduced-motion
+     * Respect reduced-motion
      *******************/
     (function(){
       const media = window.matchMedia('(prefers-reduced-motion: reduce)');
       if (media.matches) {
-        // stop cert rotation, minimize transitions
-        // rotation logic already checks reduce; we can reduce CSS transitions by setting reduced flag if needed
+        // if user prefers reduced motion, stop interval-based animations where possible
+        // banner rotation handled in earlier closure which checks this preference
       }
     })();
-
-    /*******************
-     * Blog section note
-     *******************/
-    // To add a new blog later without touching JS/CSS:
-    // - open index.html and inside <div id="blogList"> add another <article class="blog-card"> block (copy the example).
-    // This keeps everything append-only and will not disturb other sections.
   </script>
 </body>
 </html>
